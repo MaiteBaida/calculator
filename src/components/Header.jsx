@@ -1,9 +1,7 @@
 function Header() {
   return (
     <header>
-      <p>
-        This is a <header></header>{" "}
-      </p>
+      <p>This is a header</p>
     </header>
   );
 }
