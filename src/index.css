@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .btn-number {
+    @apply bg-custom-black text-white rounded-full w-16 h-16 text-2xl;
+  }
+  .btn-operator {
+    @apply bg-custom-black text-custom-orange rounded-full w-16 h-16 text-2xl;
+  }
+  .btn-special-operator {
+    @apply bg-custom-black text-custom-yellow rounded-full w-16 h-16 text-2xl;
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -11,7 +23,7 @@
   text-decoration: none;
   font-family: "Quicksand", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 300;
+  font-weight: 400;
   font-style: normal;
   position: relative;
 }
@@ -25,14 +37,12 @@ a {
   text-decoration: none;
 }
 
-@layer components {
-  .btn-number {
-    @apply bg-custom-black text-white rounded-full w-8 h-8;
-  }
-  .btn-operator {
-    @apply bg-custom-black text-custom-orange rounded-full w-8 h-8;
-  }
-  .btn-special-operator {
-    @apply bg-custom-black text-custom-yellow rounded-full w-8 h-8;
-  }
+.rounded-t-2 {
+  border-top-left-radius: 2rem; /* Corresponds to 3xl */
+  border-top-right-radius: 2rem; /* Corresponds to 3xl */
+}
+
+.rounded-b-2 {
+  border-bottom-left-radius: 2rem; /* Corresponds to 3xl */
+  border-bottom-right-radius: 2rem; /* Corresponds to 3xl */
 }
