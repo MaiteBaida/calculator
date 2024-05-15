@@ -4,7 +4,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        "custom-blue": "rgb(8, 30, 127)",
+        "custom-black": "rgb(34, 33, 45)",
+        "custom-blue": "rgb(71, 77, 91)",
+        "custom-orange": "rgb(255, 130, 97)",
+        "custom-yellow": "rgb(251, 244, 141)",
       },
     },
   },

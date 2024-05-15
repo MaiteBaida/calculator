@@ -1,7 +1,7 @@
 const buttonStyles = {
   number: "btn-number",
   operator: "btn-operator",
-  refresh: "btn-refresh",
+  specialOperator: "btn-special-operator",
 };
 
 function Button({ type, onClick, label, style, customClass }) {

@@ -25,6 +25,14 @@ a {
   text-decoration: none;
 }
 
-.btn-number {
-  background-color: black;
+@layer components {
+  .btn-number {
+    @apply bg-custom-black text-white rounded-full w-8 h-8;
+  }
+  .btn-operator {
+    @apply bg-custom-black text-custom-orange rounded-full w-8 h-8;
+  }
+  .btn-special-operator {
+    @apply bg-custom-black text-custom-yellow rounded-full w-8 h-8;
+  }
 }
