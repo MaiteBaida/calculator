@@ -73,6 +73,10 @@ function Calculator() {
       setResultDisplay(numbersArray[0] * numbersArray[1]);
     } else if (inputOperator === "÷") {
       setResultDisplay(numbersArray[0] / numbersArray[1]);
+    } else if (inputOperator === "%") {
+      setResultDisplay(numbersArray[0] / 100);
+    } else if (inputOperator === "±") {
+      setResultDisplay(-numbersArray[0]);
     }
   };
 
@@ -89,7 +93,11 @@ function Calculator() {
           <span className="text-3xl h-9">{resultDisplay}</span>
         </div>
         <div className="bg-custom-blue grid grid-cols-4 gap-2 p-6 rounded-b-2 shadow-lg">
-          <Button label="AC" style="specialOperator" />
+          <Button
+            label="AC"
+            style="specialOperator"
+            onClick={handleRefreshButton}
+          />
           <Button
             label="±"
             style="specialOperator"
