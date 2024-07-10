@@ -2,27 +2,28 @@ import Button from "./button";
 import { useState } from "react";
 
 function Calculator() {
-  const [resultDisplay, setResultDisplay] = useState(" ");
-  const [operationDisplay, setOperationDisplay] = useState(" ");
+  const [resultDisplay, setResultDisplay] = useState("");
+  const [operationDisplay, setOperationDisplay] = useState("");
 
   let numbers = resultDisplay;
   let operation = operationDisplay;
 
-  //Handle displays
   const handleResultDisplay = function (label) {
-    numbers === " " ? (numbers = label) : (numbers = numbers + label);
+    if (numbers === "0" && label !== ".") {
+      numbers = label;
+    } else {
+      numbers = numbers + label;
+    }
     setResultDisplay(numbers);
   };
 
   const handleOperatorDisplay = function (operator) {
-    operation = `${operation} ${numbers} ${operator}`;
+    operation = `${numbers} ${operator}`;
     setOperationDisplay(operation);
-
     numbers = "";
     setResultDisplay(numbers);
   };
 
-  //Handle Refresh
   const handleRefreshButton = function () {
     operation = "";
     numbers = "";
@@ -30,59 +31,68 @@ function Calculator() {
     setResultDisplay(numbers);
   };
 
-  //Operations
-
-  let inputOperator;
   let numbersArray = [];
+  let inputOperator = "";
 
-  function findOperator(str) {
-    const operatorsArray = ["+", "-", "x", "÷", "%", "±"];
-
-    for (let operator of operatorsArray) {
-      if (operation.includes(operator)) {
-        inputOperator = operator;
-        break;
-      }
+  const calculateResult = function () {
+    const [num1, num2] = numbersArray;
+    switch (inputOperator) {
+      case "+":
+        return num1 + num2;
+      case "-":
+        return num1 - num2;
+      case "x":
+        return num1 * num2;
+      case "÷":
+        return num1 / num2;
+      default:
+        return null;
     }
-
-    return inputOperator;
-  }
-
-  const stringToArray = function () {
-    const operationArray = operation.split(" ");
-
-    numbersArray = operationArray
-      .filter((str) => str.trim() !== "" && !isNaN(str))
-      .map((str) => Number(str));
-
-    return numbersArray;
   };
 
-  const result = function () {
+  const handleResult = function () {
     handleOperatorDisplay("=");
-    stringToArray();
-    findOperator(operation);
-
-    console.log(inputOperator, numbersArray);
-
-    if (inputOperator === "+") {
-      setResultDisplay(numbersArray[0] + numbersArray[1]);
-    } else if (inputOperator === "-") {
-      setResultDisplay(numbersArray[0] - numbersArray[1]);
-    } else if (inputOperator === "x") {
-      setResultDisplay(numbersArray[0] * numbersArray[1]);
-    } else if (inputOperator === "÷") {
-      setResultDisplay(numbersArray[0] / numbersArray[1]);
-    } else if (inputOperator === "%") {
-      setResultDisplay(numbersArray[0] / 100);
-    } else if (inputOperator === "±") {
-      setResultDisplay(-numbersArray[0]);
-    }
+    numbersArray = numbers.split(" ").map((str) => parseFloat(str));
+    inputOperator = operationDisplay.trim().split(" ")[1];
+    const result = calculateResult();
+    setResultDisplay(result.toString());
   };
 
-  const addition = function () {
-    handleOperatorDisplay("+");
-    stringToArray();
+  const handlePercentage = function () {
+    setOperationDisplay(`${operationDisplay.trim()} ${numbers} %`);
+
+    const parts = `${operationDisplay.trim()} ${numbers} %`.trim().split(/\s+/);
+
+    if (parts.length < 4) {
+      setResultDisplay("0");
+      return;
+    }
+
+    const secondValue = parseFloat(parts[2]);
+    const firstValue = parseFloat(parts[0]);
+    const operator = parts[1];
+
+    let result;
+    console.log(operator);
+    switch (operator) {
+      case "+":
+        result = firstValue + firstValue * (secondValue / 100);
+        break;
+      case "-":
+        result = firstValue - firstValue * (secondValue / 100);
+        break;
+      case "x":
+        result = firstValue * (secondValue / 100);
+        break;
+      case "÷":
+        result = firstValue / (secondValue / 100);
+        break;
+      default:
+        setResultDisplay("0");
+        return;
+    }
+
+    setResultDisplay(result.toString());
   };
 
   return (
@@ -106,7 +116,7 @@ function Calculator() {
           <Button
             label="%"
             style="specialOperator"
-            onClick={() => handleOperatorDisplay("%")}
+            onClick={handlePercentage}
           />
           <Button
             label="÷"
@@ -168,7 +178,11 @@ function Calculator() {
             style="number"
             onClick={() => handleResultDisplay("3")}
           />
-          <Button label="+" style="operator" onClick={addition} />
+          <Button
+            label="+"
+            style="operator"
+            onClick={() => handleOperatorDisplay("+")}
+          />
           <Button label="R" style="operator" onClick={handleRefreshButton} />
           <Button
             label="0"
@@ -180,7 +194,7 @@ function Calculator() {
             style="number"
             onClick={() => handleResultDisplay(".")}
           />
-          <Button label="=" style="operator" onClick={result} />
+          <Button label="=" style="operator" onClick={handleResult} />
         </div>
       </section>
     </main>
