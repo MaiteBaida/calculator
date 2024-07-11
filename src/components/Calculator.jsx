@@ -18,10 +18,21 @@ function Calculator() {
   };
 
   const handleOperatorDisplay = function (operator) {
-    operation = `${numbers} ${operator}`;
-    setOperationDisplay(operation);
-    numbers = "";
-    setResultDisplay(numbers);
+    if (operation) {
+      const [firstNumber, currentOperator] = operation.split(" ");
+      const result = calculateResult(
+        parseFloat(firstNumber),
+        parseFloat(numbers),
+        currentOperator
+      );
+      setOperationDisplay(`${result} ${operator}`);
+      setResultDisplay("");
+      numbers = "";
+    } else {
+      setOperationDisplay(`${numbers} ${operator}`);
+      numbers = "";
+      setResultDisplay(numbers);
+    }
   };
 
   const handleRefreshButton = function () {
@@ -31,12 +42,8 @@ function Calculator() {
     setResultDisplay(numbers);
   };
 
-  let numbersArray = [];
-  let inputOperator = "";
-
-  const calculateResult = function () {
-    const [num1, num2] = numbersArray;
-    switch (inputOperator) {
+  const calculateResult = function (num1, num2, operator) {
+    switch (operator) {
       case "+":
         return num1 + num2;
       case "-":
@@ -51,10 +58,13 @@ function Calculator() {
   };
 
   const handleResult = function () {
-    handleOperatorDisplay("=");
-    numbersArray = numbers.split(" ").map((str) => parseFloat(str));
-    inputOperator = operationDisplay.trim().split(" ")[1];
-    const result = calculateResult();
+    const [firstNumber, operator] = operationDisplay.split(" ");
+    const result = calculateResult(
+      parseFloat(firstNumber),
+      parseFloat(numbers),
+      operator
+    );
+    setOperationDisplay(`${firstNumber} ${operator} ${numbers} =`);
     setResultDisplay(result.toString());
   };
 
@@ -73,7 +83,7 @@ function Calculator() {
     const operator = parts[1];
 
     let result;
-    console.log(operator);
+
     switch (operator) {
       case "+":
         result = firstValue + firstValue * (secondValue / 100);
