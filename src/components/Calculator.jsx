@@ -1,5 +1,6 @@
 import Button from "./button";
 import { useState } from "react";
+import calculateResult from "../functions/calculateResult";
 
 function Calculator() {
   const [resultDisplay, setResultDisplay] = useState("");
@@ -20,13 +21,15 @@ function Calculator() {
   const handleOperatorDisplay = function (operator) {
     if (operation) {
       const [firstNumber, currentOperator] = operation.split(" ");
+
       const result = calculateResult(
         parseFloat(firstNumber),
         parseFloat(numbers),
         currentOperator
       );
+
       setOperationDisplay(`${result} ${operator}`);
-      setResultDisplay("");
+      setResultDisplay(result.toString());
       numbers = "";
     } else {
       setOperationDisplay(`${numbers} ${operator}`);
@@ -40,21 +43,6 @@ function Calculator() {
     numbers = "";
     setOperationDisplay(operation);
     setResultDisplay(numbers);
-  };
-
-  const calculateResult = function (num1, num2, operator) {
-    switch (operator) {
-      case "+":
-        return num1 + num2;
-      case "-":
-        return num1 - num2;
-      case "x":
-        return num1 * num2;
-      case "÷":
-        return num1 / num2;
-      default:
-        return null;
-    }
   };
 
   const handleResult = function () {
@@ -105,6 +93,20 @@ function Calculator() {
     setResultDisplay(result.toString());
   };
 
+  const handleToggleSign = function () {
+    if (numbers) {
+      const toggledNumber = (parseFloat(numbers) * -1).toString();
+      setResultDisplay(toggledNumber);
+    } else if (operation) {
+      const parts = operation.split(" ");
+      if (parts.length >= 2) {
+        const lastNumber = parseFloat(parts[parts.length - 1]);
+        parts[parts.length - 1] = (lastNumber * -1).toString();
+        setOperationDisplay(parts.join(" "));
+      }
+    }
+  };
+
   return (
     <main className="bg-custom-yellow flex justify-center h-screen">
       <section className="m-7">
@@ -121,7 +123,7 @@ function Calculator() {
           <Button
             label="±"
             style="specialOperator"
-            onClick={() => handleOperatorDisplay("±")}
+            onClick={handleToggleSign}
           />
           <Button
             label="%"
