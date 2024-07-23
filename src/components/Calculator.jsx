@@ -6,60 +6,50 @@ function Calculator() {
   const [resultDisplay, setResultDisplay] = useState("");
   const [operationDisplay, setOperationDisplay] = useState("");
 
-  let numbers = resultDisplay;
-  let operation = operationDisplay;
-
   const handleResultDisplay = function (label) {
-    if (numbers === "0" && label !== ".") {
-      numbers = label;
-    } else {
-      numbers = numbers + label;
-    }
-    setResultDisplay(resultMaxLenght(numbers));
+    setResultDisplay(resultMaxLenght(resultDisplay + label));
   };
 
   const handleOperatorDisplay = function (operator) {
-    if (operation) {
-      const [firstNumber, currentOperator] = operation.split(" ");
+    if (operationDisplay) {
+      const [firstNumber, currentOperator] = operationDisplay.split(" ");
 
       const result = calculateResult(
         parseFloat(firstNumber),
-        parseFloat(numbers),
+        parseFloat(resultDisplay),
         currentOperator
       );
 
       setOperationDisplay(`${result} ${operator}`);
-      setResultDisplay(resultMaxLenght(result.toString()));
-      numbers = "";
+      setResultDisplay("");
     } else {
-      setOperationDisplay(`${numbers} ${operator}`);
-      numbers = "";
-      setResultDisplay(resultMaxLenght(numbers));
+      setOperationDisplay(`${resultDisplay} ${operator}`);
+      setResultDisplay("");
     }
   };
 
   const handleRefreshButton = function () {
-    operation = "";
-    numbers = "";
-    setOperationDisplay(operation);
-    setResultDisplay(resultMaxLenght(numbers));
+    setOperationDisplay("");
+    setResultDisplay("");
   };
 
   const handleResult = function () {
     const [firstNumber, operator] = operationDisplay.split(" ");
     const result = calculateResult(
       parseFloat(firstNumber),
-      parseFloat(numbers),
+      parseFloat(resultDisplay),
       operator
     );
-    setOperationDisplay(`${firstNumber} ${operator} ${numbers} =`);
+    setOperationDisplay(`${firstNumber} ${operator} ${resultDisplay} =`);
     setResultDisplay(resultMaxLenght(result.toString()));
   };
 
   const handlePercentage = function () {
-    setOperationDisplay(`${operationDisplay.trim()} ${numbers} %`);
+    setOperationDisplay(`${operationDisplay.trim()} ${resultDisplay} %`);
 
-    const parts = `${operationDisplay.trim()} ${numbers} %`.trim().split(/\s+/);
+    const parts = `${operationDisplay.trim()} ${resultDisplay} %`
+      .trim()
+      .split(/\s+/);
 
     if (parts.length < 4) {
       setResultDisplay("0");
@@ -94,11 +84,11 @@ function Calculator() {
   };
 
   const handleToggleSign = function () {
-    if (numbers) {
-      const toggledNumber = (parseFloat(numbers) * -1).toString();
+    if (resultDisplay) {
+      const toggledNumber = (parseFloat(resultDisplay) * -1).toString();
       setResultDisplay(resultMaxLenght(toggledNumber));
-    } else if (operation) {
-      const parts = operation.split(" ");
+    } else if (operationDisplay) {
+      const parts = operationDisplay.split(" ");
       if (parts.length >= 2) {
         const lastNumber = parseFloat(parts[parts.length - 1]);
         parts[parts.length - 1] = (lastNumber * -1).toString();
@@ -214,3 +204,5 @@ function Calculator() {
 }
 
 export default Calculator;
+
+//resultado 2+2=4 quando apertar outro # tem q zerar antes
