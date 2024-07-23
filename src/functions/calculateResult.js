@@ -1,4 +1,4 @@
-const calculateResult = function (num1, num2, operator) {
+export const calculateResult = function (num1, num2, operator) {
   switch (operator) {
     case "+":
       return num1 + num2;
@@ -13,4 +13,6 @@ const calculateResult = function (num1, num2, operator) {
   }
 };
 
-export default calculateResult;
+export const resultMaxLenght = function (result) {
+  return result.substring(0, 14);
+};

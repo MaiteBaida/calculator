@@ -1,6 +1,6 @@
 import Button from "./button";
 import { useState } from "react";
-import calculateResult from "../functions/calculateResult";
+import { calculateResult, resultMaxLenght } from "../functions/calculateResult";
 
 function Calculator() {
   const [resultDisplay, setResultDisplay] = useState("");
@@ -15,7 +15,7 @@ function Calculator() {
     } else {
       numbers = numbers + label;
     }
-    setResultDisplay(numbers);
+    setResultDisplay(resultMaxLenght(numbers));
   };
 
   const handleOperatorDisplay = function (operator) {
@@ -29,12 +29,12 @@ function Calculator() {
       );
 
       setOperationDisplay(`${result} ${operator}`);
-      setResultDisplay(result.toString());
+      setResultDisplay(resultMaxLenght(result.toString()));
       numbers = "";
     } else {
       setOperationDisplay(`${numbers} ${operator}`);
       numbers = "";
-      setResultDisplay(numbers);
+      setResultDisplay(resultMaxLenght(numbers));
     }
   };
 
@@ -42,7 +42,7 @@ function Calculator() {
     operation = "";
     numbers = "";
     setOperationDisplay(operation);
-    setResultDisplay(numbers);
+    setResultDisplay(resultMaxLenght(numbers));
   };
 
   const handleResult = function () {
@@ -53,7 +53,7 @@ function Calculator() {
       operator
     );
     setOperationDisplay(`${firstNumber} ${operator} ${numbers} =`);
-    setResultDisplay(result.toString());
+    setResultDisplay(resultMaxLenght(result.toString()));
   };
 
   const handlePercentage = function () {
@@ -90,13 +90,13 @@ function Calculator() {
         return;
     }
 
-    setResultDisplay(result.toString());
+    setResultDisplay(resultMaxLenght(result.toString()));
   };
 
   const handleToggleSign = function () {
     if (numbers) {
       const toggledNumber = (parseFloat(numbers) * -1).toString();
-      setResultDisplay(toggledNumber);
+      setResultDisplay(resultMaxLenght(toggledNumber));
     } else if (operation) {
       const parts = operation.split(" ");
       if (parts.length >= 2) {
